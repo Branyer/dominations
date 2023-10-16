@@ -10,6 +10,7 @@ import { proxy, useSnapshot } from "valtio";
 import DroppableCell from "./DroppableCell";
 import { useState } from "react";
 import DraggableBuilding from "./DraggableBuilding";
+import BuildingGeneral from "./BuildingGeneral";
 
 export const gameBoardState = proxy({
   hoveredCellId: undefined,
@@ -23,22 +24,28 @@ const ages = {
       {
         id: 1,
         name: "Town Center",
-        conditions: [],
-        image: "",
+        conditions: {
+          gold: 100,
+          food: 100,
+          wood: 100,
+        },
+        image: "images/dawn-age-town-center.png",
         square: 4,
+        quantity: 1,
       },
       {
         id: 2,
         name: "Pile of Sticks",
         conditions: [],
-        image: "",
+        image: "images/pile-of-sticks.png",
         square: 1,
+        quantity: 2,
       },
       {
         id: 3,
         name: "House",
         conditions: [],
-        image: "",
+        image: "images/dawn-age-house.png",
         square: 1,
       },
     ],
@@ -87,8 +94,84 @@ function Game() {
   const snapBoardState = useSnapshot(gameBoardState);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
   const [playerField, setPlayerField] = useState(
-    Array(200).fill({ taken: false })
+    Array(200)
+      .fill({ taken: false })
+      .map((c, idx) => {
+        const i = Math.floor(idx / 20);
+        const j = idx - i * 20;
+        return {
+          ...c,
+          id: `${i}-${j}`,
+        };
+      })
   );
+
+  const [buildingsAdded, setBuildingsAdded] = useState([]);
+
+  const validatePosition = (square) => {
+    if (square === 1) {
+      const fieldCell = playerField.find(
+        (f) => f.id === snapBoardState.hoveredCellId
+      );
+
+      if (!fieldCell?.taken && fieldCell) return [snapBoardState.hoveredCellId];
+    } else if (square === 4) {
+      const [hoveredI, hoveredJ] = snapBoardState.hoveredCellId.split("-");
+
+      const fieldCell = playerField.find(
+        (f) => f.id === snapBoardState.hoveredCellId
+      );
+
+      const fieldCellRigth = playerField.find((f) => {
+        const [fieldI, fieldJ] = f.id.split("-");
+
+        if (Number(hoveredJ) + 1 <= 19) {
+          if (hoveredI == fieldI && Number(hoveredJ) + 1 == fieldJ) return true;
+        }
+
+        return false;
+      });
+
+      const fieldBottom = playerField.find((f) => {
+        const [fieldI, fieldJ] = f.id.split("-");
+
+        if (Number(hoveredI) + 1 <= 9) {
+          if (Number(hoveredI) + 1 == fieldI && hoveredJ == fieldJ) return true;
+        }
+
+        return false;
+      });
+
+      const fieldBottomRigth = playerField.find((f) => {
+        const [fieldI, fieldJ] = f.id.split("-");
+
+        if (Number(hoveredI) + 1 <= 9 && Number(hoveredJ) + 1 <= 19) {
+          if (Number(hoveredI) + 1 == fieldI && Number(hoveredJ) + 1 == fieldJ)
+            return true;
+        }
+
+        return false;
+      });
+
+      if (
+        fieldCell &&
+        fieldCellRigth &&
+        fieldBottom &&
+        fieldBottomRigth &&
+        !fieldCell?.taken &&
+        !fieldCellRigth?.taken &&
+        !fieldBottom?.taken &&
+        !fieldBottomRigth?.taken
+      ) {
+        return [
+          fieldCell.id,
+          fieldCellRigth.id,
+          fieldBottom.id,
+          fieldBottomRigth.id,
+        ];
+      }
+    }
+  };
 
   const handleDragEnd = () => {
     if (
@@ -97,40 +180,46 @@ function Game() {
     )
       return;
 
+    const buildingInfo = ages["dawn"].buildings.find(
+      (b) => b.id === snapBoardState.buildingId
+    );
 
+    const square = buildingInfo?.square;
 
+    const cellsTaken = validatePosition(square);
 
-      console.log(snapBoardState.hoveredCellId, snapBoardState.buildingId)
+    if (cellsTaken) {
+      setPlayerField((p) => {
+        return p.map((c) => {
+          if (cellsTaken.includes(c.id)) {
+            return {
+              ...c,
+              taken: true,
+            };
+          }
 
-    // const shipLength = playerShips[draggedShipId].length;
+          return {
+            ...c,
+          };
+        });
+      });
 
-    // if (isPositionValid(playerField, hoveredCellId, shipLength, axis)) {
-    //   //get dropped ships positions
-    //   const positions = createShipPositions(hoveredCellId, shipLength, axis);
+      //todo add building
 
-    //   // set dropped ships new positions
-    //   setPlayerShips((ships) => ({
-    //     ...ships,
-    //     [draggedShipId]: {
-    //       ...ships[draggedShipId],
-    //       positions,
-    //       axis,
-    //     },
-    //   }));
+      setBuildingsAdded((bs) => {
+        return [
+          ...bs,
+          {
+            position: cellsTaken[0],
+            ...buildingInfo,
+          },
+        ];
+      });
+    }
 
-    //   // set ids in cells
-    //   const fieldClone = JSON.parse(JSON.stringify(playerField));
+    // if (Number(hoveredJ) + 1 <= 19) {
 
-    //   positions.forEach(
-    //     (id) =>
-    //       (fieldClone[id] = {
-    //         ...fieldClone[id],
-    //         shipId: draggedShipId,
-    //       })
-    //   );
-
-    //   setPlayerField(fieldClone);
-    // }
+    console.log(snapBoardState.hoveredCellId, snapBoardState.buildingId);
 
     resetDnDState();
   };
@@ -155,17 +244,34 @@ function Game() {
         sensors={sensors}
       >
         <div>
-          <div>
-            {ages.dawn.buildings.map((test) => {
+          <div style={{ display: "flex", gap: 5, paddingBottom: 10 }}>
+            {ages["dawn"].buildings.map((test) => {
               return (
-                <DraggableBuilding key={test.id} id={test.id} building={test} />
+                <DraggableBuilding
+                  key={test.id}
+                  id={test.id}
+                  building={test}
+                  buildings={ages["dawn"].buildings}
+                />
               );
             })}
           </div>
           <div className="game-board-grid">
-            {playerField.map((data, id) => (
-              <DroppableCell key={id} cellId={id} />
-            ))}
+            {playerField.map((data) => {
+              return (
+                <DroppableCell
+                  key={data.id}
+                  cellId={data.id}
+                  taken={data.taken}
+                  buildings={ages["dawn"].buildings}
+                />
+              );
+            })}
+
+            {buildingsAdded.map((data) => {
+              return <BuildingGeneral data={data} />;
+            })}
+
             {/* {Object.entries(playerShips).map(([id, ship]) => (
             <FieldShip
               key={id}
