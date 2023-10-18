@@ -15,78 +15,18 @@ import BuildingGeneral from "./BuildingGeneral";
 export const gameBoardState = proxy({
   hoveredCellId: undefined,
   buildingId: undefined,
+  currentAge: "dawn",
 });
 
 const ages = {
   dawn: {
     title: "DAWN AGE",
-    buildings: [
-      {
-        id: 1,
-        name: "Town Center",
-        conditions: {
-          gold: 100,
-          food: 100,
-          wood: 100,
-        },
-        image: "images/dawn-age-town-center.png",
-        square: 4,
-        quantity: 1,
-      },
-      {
-        id: 2,
-        name: "Pile of Sticks",
-        conditions: [],
-        image: "images/pile-of-sticks.png",
-        square: 1,
-        quantity: 2,
-      },
-      {
-        id: 3,
-        name: "House",
-        conditions: [],
-        image: "images/dawn-age-house.png",
-        square: 1,
-      },
-    ],
   },
   stone: {
     title: "STONE AGE",
-    buildings: [
-      {
-        id: 4,
-        name: "Market",
-        conditions: [],
-        image: "",
-        square: 4,
-      },
-      {
-        id: 5,
-        name: "Mill",
-        conditions: [],
-        image: "",
-        square: 1,
-      },
-    ],
   },
   bronze: {
     title: "BRONZE AGE",
-    buildings: [
-      {
-        id: 6,
-        name: "Farm",
-        conditions: [],
-        image: "",
-        square: 4,
-      },
-      {
-        id: 1,
-        name: "Town Center",
-        conditions: [],
-        image: "",
-        square: 4,
-      },
-    ],
   },
 };
 
