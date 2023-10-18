@@ -8,8 +8,8 @@ function BuildingGeneral({ data }) {
 
   const [i, j] = data.position.split("-");
 
-  const top = i * 70;
-  const left = j * 80;
+  const top = i * 42;
+  const left = j * 50;
 
   return (
     <>
@@ -17,12 +17,12 @@ function BuildingGeneral({ data }) {
         style={{
           top,
           left,
-          width: data.square === 1 ? 80 : 80 * 2,
-          height: data.square === 1 ? 70 : 70 * 2,
+          width: data.square === 1 ? 50 : 50 * 2,
+          height: data.square === 1 ? 42 : 42 * 2,
         }}
         className="building"
       >
-        <img src={data.image} alt={data.name} draggable="false"/>
+        <img src={data.image} alt={data.name} draggable="false" />
       </div>
     </>
   );

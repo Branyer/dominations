@@ -244,6 +244,32 @@ function Game() {
         sensors={sensors}
       >
         <div>
+          <div className="info-container">
+            <div className="info">
+              <img
+                src="public/images/gold-coin.png"
+                alt="gold"
+                className="img-info"
+              />
+              <span className="info-details">0</span>
+            </div>
+            <div className="info">
+              <img
+                src="public/images/food.png"
+                alt="food"
+                className="img-info"
+              />
+              <span className="info-details">0</span>
+            </div>
+            <div className="info">
+              <img
+                src="public/images/citizens.png"
+                alt="citizens"
+                className="img-info"
+              />
+              <span className="info-details">0/4</span>
+            </div>
+          </div>
           <div style={{ display: "flex", gap: 5, paddingBottom: 10 }}>
             {ages["dawn"].buildings.map((test) => {
               return (
