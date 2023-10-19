@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 import {
   DndContext,
   MouseSensor,
@@ -6,63 +8,70 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { restrictToWindowEdges } from "@dnd-kit/modifiers";
-import { proxy, useSnapshot } from "valtio";
+import { useSnapshot } from "valtio";
 import DroppableCell from "./DroppableCell";
-import { useState } from "react";
+
 import DraggableBuilding from "./DraggableBuilding";
 import BuildingGeneral from "./BuildingGeneral";
+import Bush from "./Bush";
+import { gameBoardState } from "./state/gameBoardState";
+import { elements } from "./data/elements";
+import FoodElement from "./FoodElement";
+import GoldElement from "./GoldElement";
 
-export const gameBoardState = proxy({
-  hoveredCellId: undefined,
-  buildingId: undefined,
-  currentAge: "dawn",
-});
-
-const ages = {
-  dawn: {
-    title: "DAWN AGE",
-  },
-  stone: {
-    title: "STONE AGE",
-  },
-  bronze: {
-    title: "BRONZE AGE",
-  },
-};
+// const ages = {
+//   dawn: {
+//     title: "DAWN AGE",
+//   },
+//   stone: {
+//     title: "STONE AGE",
+//   },
+//   bronze: {
+//     title: "BRONZE AGE",
+//   },
+// };
 
 function Game() {
   const snapBoardState = useSnapshot(gameBoardState);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
-  const [playerField, setPlayerField] = useState(
-    Array(200)
-      .fill({ taken: false })
-      .map((c, idx) => {
-        const i = Math.floor(idx / 20);
-        const j = idx - i * 20;
-        return {
-          ...c,
-          id: `${i}-${j}`,
-        };
-      })
-  );
+  const refFirstTime = useRef(true);
 
-  const [buildingsAdded, setBuildingsAdded] = useState([]);
+  const {
+    cellsFieldState,
+    hoveredCellId,
+    buildingId,
+    currentAge,
+    elementsAdded,
+    resources,
+  } = snapBoardState;
+
+  const buildings = elements.filter((el) => {
+    const quantityAdded = elementsAdded.filter(
+      (ea) => ea.buldingId == el.id
+    ).length;
+
+    if ((el.name === "House" || el.name === 'Pile of Sticks') && currentAge === "dawn") return false;
+
+    return (
+      ["building", "decoration"].includes(el.type) &&
+      el.ages.includes(currentAge) &&
+      quantityAdded < el.quantity[currentAge]
+    );
+  });
 
   const validatePosition = (square) => {
     if (square === 1) {
-      const fieldCell = playerField.find(
-        (f) => f.id === snapBoardState.hoveredCellId
-      );
+      const fieldCell = cellsFieldState.find((f) => f.id === hoveredCellId);
 
-      if (!fieldCell?.taken && fieldCell) return [snapBoardState.hoveredCellId];
+      if (!fieldCell?.taken && fieldCell) return [hoveredCellId];
     } else if (square === 4) {
       const [hoveredI, hoveredJ] = snapBoardState.hoveredCellId.split("-");
 
-      const fieldCell = playerField.find(
+      const fieldCell = cellsFieldState.find(
         (f) => f.id === snapBoardState.hoveredCellId
       );
 
-      const fieldCellRigth = playerField.find((f) => {
+      const fieldCellRigth = cellsFieldState.find((f) => {
         const [fieldI, fieldJ] = f.id.split("-");
 
         if (Number(hoveredJ) + 1 <= 19) {
@@ -72,7 +81,7 @@ function Game() {
         return false;
       });
 
-      const fieldBottom = playerField.find((f) => {
+      const fieldBottom = cellsFieldState.find((f) => {
         const [fieldI, fieldJ] = f.id.split("-");
 
         if (Number(hoveredI) + 1 <= 9) {
@@ -82,7 +91,7 @@ function Game() {
         return false;
       });
 
-      const fieldBottomRigth = playerField.find((f) => {
+      const fieldBottomRigth = cellsFieldState.find((f) => {
         const [fieldI, fieldJ] = f.id.split("-");
 
         if (Number(hoveredI) + 1 <= 9 && Number(hoveredJ) + 1 <= 19) {
@@ -114,52 +123,17 @@ function Game() {
   };
 
   const handleDragEnd = () => {
-    if (
-      snapBoardState.hoveredCellId === undefined ||
-      !snapBoardState.buildingId
-    )
-      return;
+    if (hoveredCellId === undefined || !buildingId) return;
 
-    const buildingInfo = ages["dawn"].buildings.find(
-      (b) => b.id === snapBoardState.buildingId
-    );
+    const buildingInfo = buildings.find((b) => b.id === buildingId);
 
     const square = buildingInfo?.square;
 
     const cellsTaken = validatePosition(square);
 
     if (cellsTaken) {
-      setPlayerField((p) => {
-        return p.map((c) => {
-          if (cellsTaken.includes(c.id)) {
-            return {
-              ...c,
-              taken: true,
-            };
-          }
-
-          return {
-            ...c,
-          };
-        });
-      });
-
-      //todo add building
-
-      setBuildingsAdded((bs) => {
-        return [
-          ...bs,
-          {
-            position: cellsTaken[0],
-            ...buildingInfo,
-          },
-        ];
-      });
+      gameBoardState.addBuilding(cellsTaken, buildingId);
     }
-
-    // if (Number(hoveredJ) + 1 <= 19) {
-
-    console.log(snapBoardState.hoveredCellId, snapBoardState.buildingId);
 
     resetDnDState();
   };
@@ -173,6 +147,22 @@ function Game() {
     gameBoardState.hoveredCellId = undefined;
     gameBoardState.buildingId = undefined;
   };
+
+  useEffect(() => {
+    //INIT GAME
+
+    if (refFirstTime.current) {
+      gameBoardState.initGame();
+
+      refFirstTime.current = false;
+    }
+  }, [cellsFieldState]);
+
+  useEffect(() => {
+    const houses = elementsAdded.filter((ea) => ea.buldingId === 3);
+
+    gameBoardState.resources.citizens = houses.length * 2 + 3;
+  }, [elementsAdded]);
 
   return (
     <>
@@ -191,7 +181,7 @@ function Game() {
                 alt="gold"
                 className="img-info"
               />
-              <span className="info-details">0</span>
+              <span className="info-details">{resources.gold}</span>
             </div>
             <div className="info">
               <img
@@ -199,7 +189,7 @@ function Game() {
                 alt="food"
                 className="img-info"
               />
-              <span className="info-details">0</span>
+              <span className="info-details">{resources.food}</span>
             </div>
             <div className="info">
               <img
@@ -207,45 +197,47 @@ function Game() {
                 alt="citizens"
                 className="img-info"
               />
-              <span className="info-details">0/4</span>
+              <span className="info-details">
+                {resources.citizens - resources.activeCitizens}/
+                {resources.citizens}
+              </span>
             </div>
           </div>
           <div style={{ display: "flex", gap: 5, paddingBottom: 10 }}>
-            {ages["dawn"].buildings.map((test) => {
-              return (
-                <DraggableBuilding
-                  key={test.id}
-                  id={test.id}
-                  building={test}
-                  buildings={ages["dawn"].buildings}
-                />
-              );
+            {buildings.map((b) => {
+              return <DraggableBuilding key={b.id} id={b.id} building={b} />;
             })}
           </div>
           <div className="game-board-grid">
-            {playerField.map((data) => {
+            {cellsFieldState.map((data) => {
               return (
                 <DroppableCell
                   key={data.id}
                   cellId={data.id}
                   taken={data.taken}
-                  buildings={ages["dawn"].buildings}
+                  buildings={buildings}
                 />
               );
             })}
 
-            {buildingsAdded.map((data) => {
-              return <BuildingGeneral data={data} />;
-            })}
+            {elementsAdded.map((data) => {
+              if (data.foodElementId) {
+                return <FoodElement key={data.id} data={data} />;
+              }
 
-            {/* {Object.entries(playerShips).map(([id, ship]) => (
-            <FieldShip
-              key={id}
-              ship={ship}
-              removeButtonHovered={Number(id) === shipBeingRemovedId}
-              belongsTo="player"
-            />
-          ))} */}
+              if (data.goldElementId) {
+                return <GoldElement key={data.id} data={data} />;
+              }
+
+              if (data.buldingId) {
+                return <BuildingGeneral key={data.id} data={data} />;
+              }
+
+              return null;
+            })}
+            {snapBoardState.bush.map((data) => {
+              return <Bush key={data.id} data={data} />;
+            })}
           </div>
         </div>
       </DndContext>

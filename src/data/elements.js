@@ -4,23 +4,7 @@ export const elements = [
     name: "Town Center",
     type: "building",
     ages: ["dawn", "stone", "bronze"],
-    conditions: {
-      dawn: {
-        gold: 100,
-        food: 0,
-        citizens: 4,
-      },
-      stone: {
-        gold: 300,
-        food: 0,
-        citizens: 4,
-      },
-      bronze: {
-        gold: 2450,
-        food: 0,
-        citizens: 4,
-      },
-    },
+
     image: {
       dawn: "public/images/dawn-town-center.png",
       stone: "public/images/stone-town-center.png",
@@ -36,14 +20,31 @@ export const elements = [
       dawn: {
         time: 5000,
         citizens: 4,
+        conditions: {
+          gold: 100,
+          food: 100,
+          citizens: 4,
+        },
+      },
+    },
+    upgrade: {
+      dawn: {
+        time: 5000,
+        citizens: 4,
+        conditions: {
+          gold: 300,
+          food: 300,
+          citizens: 4,
+        },
       },
       stone: {
         time: 10000,
-        citizens: 4,
-      },
-      bronze: {
-        time: 7200000,
-        citizens: 4,
+        citizens: 5,
+        conditions: {
+          gold: 300,
+          food: 200,
+          citizens: 5,
+        },
       },
     },
   },
@@ -65,9 +66,15 @@ export const elements = [
       bronze: 0,
     },
     upgrade: {
-      time: 5000,
-      citizens: 2,
-      upgradeTo: 3,
+      dawn: {
+        time: 5000,
+        conditions: {
+          food: 50,
+          gold: 0,
+          citizens: 2,
+        },
+        upgradeTo: 3,
+      },
     },
   },
   {
@@ -282,16 +289,19 @@ export const elements = [
     },
     harvest: {
       dawn: {
-        time: 120000,
+        time: 1000 * 10,
         citizens: 2,
+        food: 50,
       },
       stone: {
-        time: 240000,
+        time: 1000 * 20,
         citizens: 2,
+        food: 100,
       },
       bronze: {
-        time: 480000,
+        time: 1000 * 30,
         citizens: 2,
+        food: 150,
       },
     },
   },
@@ -330,16 +340,19 @@ export const elements = [
     },
     harvest: {
       dawn: {
-        time: 60000,
+        time: 1000 * 10,
         citizens: 2,
+        gold: 40,
       },
       stone: {
-        time: 120000,
+        time: 1000 * 20,
         citizens: 2,
+        gold: 60,
       },
       bronze: {
-        time: 240000,
+        time: 1000 * 40,
         citizens: 2,
+        gold: 70,
       },
     },
   },
@@ -479,4 +492,14 @@ export const elements = [
       bronze: 1,
     },
   },
+  {
+    id: 13,
+    name: "Bush",
+    type: "bush",
+    image: "public/images/bush.jpg",
+  },
 ];
+
+export const getElementInfo = (id) => {
+  return elements.find((el) => el.id === id);
+};

@@ -1,7 +1,7 @@
 import Game from "./Game";
 // import StartScreen from "./StartScreen";
 import "./App.css";
-import { proxy, useSnapshot } from "valtio";
+import { proxy } from "valtio";
 
 export const globalState = proxy({ playing: false });
 

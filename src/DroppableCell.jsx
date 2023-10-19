@@ -1,7 +1,8 @@
 import { useDroppable } from "@dnd-kit/core";
 import PropTypes from "prop-types";
 import { useSnapshot } from "valtio";
-import { gameBoardState } from "./Game";
+import { gameBoardState } from "./state/gameBoardState";
+
 
 const DroppableCell = ({ cellId, buildings, taken }) => {
   const { setNodeRef } = useDroppable({ id: cellId });
