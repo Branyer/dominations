@@ -50,10 +50,16 @@ function Game() {
       (ea) => ea.buldingId == el.id
     ).length;
 
-    if ((el.name === "House" || el.name === 'Pile of Sticks') && currentAge === "dawn") return false;
+    if (
+      (el.name === "House" || el.name === "Pile of Sticks") &&
+      currentAge === "dawn"
+    )
+      return false;
 
     return (
-      ["building", "decoration"].includes(el.type) &&
+      ["building", "building-food", "building-gold", "decoration"].includes(
+        el.type
+      ) &&
       el.ages.includes(currentAge) &&
       quantityAdded < el.quantity[currentAge]
     );
@@ -174,6 +180,7 @@ function Game() {
         sensors={sensors}
       >
         <div>
+          <div>Current Age: {snapBoardState.currentAge}</div>
           <div className="info-container">
             <div className="info">
               <img

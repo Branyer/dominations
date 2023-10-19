@@ -41,8 +41,8 @@ export const elements = [
         time: 10000,
         citizens: 5,
         conditions: {
-          gold: 300,
-          food: 200,
+          gold: 700,
+          food: 700,
           citizens: 5,
         },
       },
@@ -82,23 +82,7 @@ export const elements = [
     name: "House",
     type: "building",
     ages: ["dawn", "stone", "bronze"],
-    conditions: {
-      dawn: {
-        gold: 0,
-        food: 0,
-        citizens: 0,
-      },
-      stone: {
-        gold: 0,
-        food: 0,
-        citizens: 0,
-      },
-      bronze: {
-        gold: 50,
-        food: 0,
-        citizens: 0,
-      },
-    },
+
     image: {
       dawn: "public/images/dawn-house.png",
       stone: "public/images/stone-house.jpg",
@@ -106,47 +90,37 @@ export const elements = [
     },
     square: 1,
     quantity: {
-      dawn: 3,
-      stone: 3,
-      bronze: 4,
+      dawn: 2,
+      stone: 5,
+      bronze: 7,
     },
     construction: {
-      dawn: {
-        time: 120000,
-        citizens: 2,
-      },
       stone: {
-        time: 240000,
-        citizens: 2,
+        time: 1000 * 7,
+
+        conditions: {
+          gold: 50,
+          food: 50,
+          citizens: 1,
+        },
       },
       bronze: {
-        time: 480000,
-        citizens: 2,
+        time: 1000 * 10,
+
+        conditions: {
+          gold: 70,
+          food: 70,
+          citizens: 1,
+        },
       },
     },
   },
   {
     id: 4,
     name: "Market",
-    type: "gold",
+    type: "building-gold",
     ages: ["stone", "bronze"],
-    conditions: {
-      dawn: {
-        gold: 0,
-        food: 0,
-        citizens: 0,
-      },
-      stone: {
-        gold: 0,
-        food: 500,
-        citizens: 4,
-      },
-      bronze: {
-        gold: 0,
-        food: 1400,
-        citizens: 4,
-      },
-    },
+
     image: {
       dawn: "",
       stone: "public/images/stone-market.jpg",
@@ -158,74 +132,52 @@ export const elements = [
       stone: 1,
       bronze: 2,
     },
-    harvest: {
-      dawn: {
-        time: 0,
-        citizens: 0,
-      },
+    construction: {
       stone: {
-        time: 480000,
-        citizens: 2,
+        time: 1000 * 20,
+        conditions: {
+          gold: 300,
+          food: 500,
+          citizens: 4,
+        },
       },
       bronze: {
-        time: 960000,
+        time: 1000 * 30,
+        conditions: {
+          gold: 400,
+          food: 1000,
+          citizens: 4,
+        },
+      },
+    },
+    harvest: {
+      stone: {
+        time: 1000 * 20,
         citizens: 2,
+        gold: 100,
+      },
+      bronze: {
+        time: 1000 * 30,
+        citizens: 2,
+        gold: 200,
       },
     },
   },
-  //   {
-  //     id: 5,
-  //     name: "Mill",
-  //     type:"food",
-  //     conditions: {
-  //       dawn: {
-  //         gold: 0,
-  //         food: 0,
-  //         citizens: 0,
-  //       },
-  //       stone: {
-  //         gold: 500,
-  //         food: 0,
-  //         citizens: 4,
-  //       },
-  //       bronze: {
-  //         gold: 1400,
-  //         food: 0,
-  //         citizens: 4,
-  //       },
-  //     },
-  //     image: {
-  //       dawn: "",
-  //       stone: "public/images/stone-mill.jpg",
-  //       bronze: "public/images/bronze-mill.jpg",
-  //     },
-  //     square: 1,
-  //     quantity: {
-  //       dawn: 0,
-  //       stone: 1,
-  //       bronze: 2,
-  //     },
-  //   },
+
   {
     id: 6,
     name: "Farm",
-    type: "food",
+    type: "building-food",
     ages: ["bronze"],
-    conditions: {
-      dawn: {
-        gold: 0,
-        food: 0,
-        citizens: 0,
-      },
-      stone: {
-        gold: 0,
-        food: 0,
-        citizens: 0,
-      },
+
+    construction: {
       bronze: {
-        gold: 500,
-        food: 100,
-        citizens: 2,
+        time: 1000 * 15,
+        conditions: {
+          gold: 150,
+          food: 150,
+          citizens: 2,
+        },
       },
     },
     image: {
@@ -240,17 +192,10 @@ export const elements = [
       bronze: 2,
     },
     harvest: {
-      dawn: {
-        time: 0,
-        citizens: 0,
-      },
-      stone: {
-        time: 0,
-        citizens: 0,
-      },
       bronze: {
         time: 60000,
         citizens: 2,
+        food: 75,
       },
     },
   },
@@ -259,23 +204,7 @@ export const elements = [
     name: "Fruit tree",
     type: "food",
     ages: ["dawn", "stone", "bronze"],
-    conditions: {
-      dawn: {
-        gold: 0,
-        food: 0,
-        citizens: 2,
-      },
-      stone: {
-        gold: 0,
-        food: 0,
-        citizens: 2,
-      },
-      bronze: {
-        gold: 0,
-        food: 0,
-        citizens: 2,
-      },
-    },
+
     image: {
       dawn: "public/images/fruit-tree.jpg",
       stone: "public/images/fruit-tree.jpg",
@@ -310,23 +239,7 @@ export const elements = [
     name: "Gold mine",
     type: "gold",
     ages: ["dawn", "stone", "bronze"],
-    conditions: {
-      dawn: {
-        gold: 0,
-        food: 0,
-        citizens: 2,
-      },
-      stone: {
-        gold: 0,
-        food: 0,
-        citizens: 2,
-      },
-      bronze: {
-        gold: 0,
-        food: 0,
-        citizens: 2,
-      },
-    },
+
     image: {
       dawn: "public/images/gold-mine.jpg",
       stone: "public/images/gold-mine.jpg",
@@ -347,12 +260,12 @@ export const elements = [
       stone: {
         time: 1000 * 20,
         citizens: 2,
-        gold: 60,
+        gold: 100,
       },
       bronze: {
-        time: 1000 * 40,
+        time: 1000 * 25,
         citizens: 2,
-        gold: 70,
+        gold: 150,
       },
     },
   },
@@ -361,32 +274,24 @@ export const elements = [
     name: "Acropolis",
     type: "decoration",
     ages: ["bronze"],
-    conditions: {
-      dawn: {
-        gold: 0,
-        food: 0,
-        citizens: 0,
-      },
-      stone: {
-        gold: 0,
-        food: 0,
-        citizens: 0,
-      },
-      bronze: {
-        gold: 1000,
-        food: 0,
-        citizens: 0,
-      },
-    },
+
     image: {
       dawn: "",
       stone: "",
       bronze: "public/images/bronze-acropolis.jpg",
     },
+    construction: {
+      bronze: {
+        time: 1000 * 40,
+        conditions: {
+          gold: 1000,
+          food: 500,
+          citizens: 4,
+        },
+      },
+    },
     square: 4,
     quantity: {
-      dawn: 0,
-      stone: 0,
       bronze: 1,
     },
   },
@@ -395,21 +300,15 @@ export const elements = [
     name: "Hanging Gardens",
     type: "decoration",
     ages: ["bronze"],
-    conditions: {
-      dawn: {
-        gold: 0,
-        food: 0,
-        citizens: 0,
-      },
-      stone: {
-        gold: 0,
-        food: 0,
-        citizens: 0,
-      },
+
+    construction: {
       bronze: {
-        gold: 4500,
-        food: 0,
-        citizens: 0,
+        time: 1000 * 40,
+        conditions: {
+          gold: 4500,
+          food: 1000,
+          citizens: 4,
+        },
       },
     },
     image: {
@@ -429,21 +328,15 @@ export const elements = [
     name: "Pyramids",
     type: "decoration",
     ages: ["bronze"],
-    conditions: {
-      dawn: {
-        gold: 0,
-        food: 0,
-        citizens: 0,
-      },
-      stone: {
-        gold: 0,
-        food: 0,
-        citizens: 0,
-      },
+
+    construction: {
       bronze: {
-        gold: 3800,
-        food: 0,
-        citizens: 0,
+        time: 1000 * 40,
+        conditions: {
+          gold: 3800,
+          food: 1000,
+          citizens: 4,
+        },
       },
     },
     image: {
@@ -463,21 +356,15 @@ export const elements = [
     name: "Stonehenge",
     type: "decoration",
     ages: ["bronze"],
-    conditions: {
-      dawn: {
-        gold: 0,
-        food: 0,
-        citizens: 0,
-      },
-      stone: {
-        gold: 0,
-        food: 0,
-        citizens: 0,
-      },
+
+    construction: {
       bronze: {
-        gold: 2200,
-        food: 0,
-        citizens: 0,
+        time: 1000 * 40,
+        conditions: {
+          gold: 2200,
+          food: 1000,
+          citizens: 4,
+        },
       },
     },
     image: {

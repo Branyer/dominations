@@ -70,9 +70,12 @@ export const gameBoardState = proxy({
         return { ...ea };
       });
     } else {
+      console.log(gameBoardState.currentAge);
       if (gameBoardState.currentAge === "dawn") {
+        gameBoardState.addGoldMine(1);
         gameBoardState.currentAge = "stone";
       } else if (gameBoardState.currentAge === "stone") {
+        gameBoardState.addGoldMine(1);
         gameBoardState.currentAge = "bronze";
       }
     }
@@ -145,7 +148,7 @@ export const gameBoardState = proxy({
     gameBoardState.addBush();
     gameBoardState.addPileOfSticks();
     gameBoardState.addFruitTrees(3);
-    gameBoardState.addGoldMine(1);
+    gameBoardState.addGoldMine(2);
   },
 
   addPileOfSticks: () => {

@@ -12,6 +12,7 @@ function BuildingGeneral({ data }) {
   const { currentAge } = snapBoardState;
   const [updradeSeconds, setUpgradeSeconds] = useState(0);
   const [constructionSeconds, setConstructionSeconds] = useState(0);
+  const [harvestSeconds, setHarvestSeconds] = useState(0);
 
   const {
     square,
@@ -19,6 +20,8 @@ function BuildingGeneral({ data }) {
     name,
     upgrade = {},
     construction = {},
+    harvest = {},
+    type,
   } = getElementInfo(data.buldingId);
 
   const [i, j] = data.position.split("-");
@@ -30,6 +33,42 @@ function BuildingGeneral({ data }) {
 
   const upgradeAge = upgrade[currentAge];
   const constructionAge = construction[currentAge];
+  const harvestAge = harvest[currentAge];
+
+  const {
+    activate: activateHarvest,
+    pause: pauseHarvest,
+    isPaused: isPausedHarvest,
+  } = useIntervalHook({
+    interval: 1000,
+    callback: () => {
+      if (harvestSeconds * 1000 === harvestAge?.time) {
+        const per = (100 * data.activeCitizens) / harvestAge?.citizens;
+
+        if (type === "building-food") {
+          gameBoardState.addFood(harvestAge?.food / (100 / per));
+        } else if (type === "building-gold") {
+          gameBoardState.addGold(harvestAge?.gold / (100 / per));
+        }
+
+        setHarvestSeconds(0);
+      } else {
+        setHarvestSeconds((s) => s + 1);
+      }
+    },
+    deactivedAtFirst: true,
+  });
+
+  useEffect(() => {
+    if (data.activeCitizens === 0) {
+      pauseHarvest();
+    } else {
+      if (isPausedHarvest) {
+        setHarvestSeconds(0);
+        activateHarvest();
+      }
+    }
+  }, [data.activeCitizens]);
 
   const {
     activate: activateUpgrade,
@@ -104,6 +143,37 @@ function BuildingGeneral({ data }) {
         }}
         className={"building" + " img-" + data.id}
       >
+        {data.constructionFinished && harvestAge ? (
+          <>
+            {harvestAge?.citizens > data.activeCitizens ? (
+              <button
+                title="add citizen"
+                className="add-citizen"
+                onClick={() => gameBoardState.addCitizen(data.id)}
+              >
+                <span>+</span>
+              </button>
+            ) : null}
+            {data.activeCitizens > 0 ? (
+              <button
+                title="remove citizen"
+                className="remove-citizen"
+                onClick={() => gameBoardState.removeCitizen(data.id)}
+              >
+                <span>-</span>
+              </button>
+            ) : null}
+            <div title="active citizens" className="count-citizen">
+              {data.activeCitizens}
+            </div>
+            {!isPausedHarvest ? (
+              <div title="seconds to get gold" className="count-work">
+                {harvestSeconds}
+              </div>
+            ) : null}
+          </>
+        ) : null}
+
         <img src={image[currentAge]} alt={name} draggable="false" />
 
         {upgradeAge ? (
@@ -157,7 +227,7 @@ function BuildingGeneral({ data }) {
           {upgradeAge ? (
             <>
               <p>
-                Upgrade: Food {upgradeAge.conditions.food}, Citizens{" "}
+                Upgrade: Food {upgradeAge.conditions.food}, Gold {upgradeAge.conditions.gold}, Citizens{" "}
                 {upgradeAge.conditions.citizens}
               </p>
               <p>Time: {upgradeAge.time / 1000}s </p>

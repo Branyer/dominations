@@ -14,7 +14,6 @@ const DraggableBuilding = ({ id, building }) => {
 
   const conditions = building.construction[currentAge]?.conditions;
 
-  console.log(conditions, snapBoardState.resources);
 
   const conditionsAreValid =
     conditions?.gold <= snapBoardState.resources.gold &&
