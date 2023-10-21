@@ -180,7 +180,25 @@ function Game() {
         sensors={sensors}
       >
         <div>
-          <div>Current Age: {snapBoardState.currentAge}</div>
+          <div className="members-container">
+            <span>Integrantes:</span>
+            <span>Branyer Alfonzo Vergara Camacho C.I:27108704</span>
+            <span>Cecilia del Carmen Zambrano Angulo C.I:27361503</span>
+            <span>Diego Alexander Fernández Afanador C.I:27271032</span>
+          </div>
+          <div className="title-container">
+            <h4 className="current-age">
+              Current Age: {snapBoardState.currentAge}
+            </h4>
+            <button
+              onClick={() => {
+                window.location.reload();
+              }}
+              className="restart-btn"
+            >
+              Restart
+            </button>
+          </div>
           <div className="info-container">
             <div className="info">
               <img
@@ -210,7 +228,7 @@ function Game() {
               </span>
             </div>
           </div>
-          <div style={{ display: "flex", gap: 5, paddingBottom: 10 }}>
+          <div style={{ display: "flex", gap: 5, paddingBottom: 20 }}>
             {buildings.map((b) => {
               return <DraggableBuilding key={b.id} id={b.id} building={b} />;
             })}

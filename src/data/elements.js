@@ -385,6 +385,49 @@ export const elements = [
     type: "bush",
     image: "public/images/bush.jpg",
   },
+  {
+    id: 14,
+    name: "Tower",
+    type: "decoration",
+    ages: ["dawn", "stone", "bronze"],
+    construction: {
+      dawn: {
+        time: 500 * 40,
+        conditions: {
+          gold: 300,
+          food: 0,
+          citizens: 3,
+        },
+      },
+      stone: {
+        time: 800 * 40,
+        conditions: {
+          gold: 1500,
+          food: 0,
+          citizens: 4,
+        },
+      },
+      bronze: {
+        time: 1000 * 40,
+        conditions: {
+          gold: 3000,
+          food: 0,
+          citizens: 4,
+        },
+      },
+    },
+    image: {
+      dawn: "public/images/dawn-tower.jpeg",
+      stone: "public/images/stone-tower.jpeg",
+      bronze: "public/images/bronze-tower.jpeg",
+    },
+    square: 1,
+    quantity: {
+      dawn: 1,
+      stone: 2,
+      bronze: 3,
+    },
+  },
 ];
 
 export const getElementInfo = (id) => {
