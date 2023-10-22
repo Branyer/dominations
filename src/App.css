@@ -34,7 +34,7 @@
 
 .cell {
   border: 1px solid black;
-  background-image: url("../public/images/grass.jpg");
+  background-image: url("/images/grass.jpg");
 }
 
 .hovered-cell {

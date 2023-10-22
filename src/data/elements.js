@@ -6,9 +6,9 @@ export const elements = [
     ages: ["dawn", "stone", "bronze"],
 
     image: {
-      dawn: "public/images/dawn-town-center.png",
-      stone: "public/images/stone-town-center.png",
-      bronze: "public/images/bronze-town-center.jpg",
+      dawn: "images/dawn-town-center.png",
+      stone: "images/stone-town-center.png",
+      bronze: "images/bronze-town-center.jpg",
     },
     square: 4,
     quantity: {
@@ -55,7 +55,7 @@ export const elements = [
     ages: ["dawn"],
     conditions: [],
     image: {
-      dawn: "public/images/pile-of-sticks.png",
+      dawn: "images/pile-of-sticks.png",
       stone: "",
       bronze: "",
     },
@@ -84,9 +84,9 @@ export const elements = [
     ages: ["dawn", "stone", "bronze"],
 
     image: {
-      dawn: "public/images/dawn-house.png",
-      stone: "public/images/stone-house.jpg",
-      bronze: "public/images/bronze-house.jpg",
+      dawn: "images/dawn-house.png",
+      stone: "images/stone-house.jpg",
+      bronze: "images/bronze-house.jpg",
     },
     square: 1,
     quantity: {
@@ -123,8 +123,8 @@ export const elements = [
 
     image: {
       dawn: "",
-      stone: "public/images/stone-market.jpg",
-      bronze: "public/images/bronze-market.jpg",
+      stone: "images/stone-market.jpg",
+      bronze: "images/bronze-market.jpg",
     },
     square: 4,
     quantity: {
@@ -183,7 +183,7 @@ export const elements = [
     image: {
       dawn: "",
       stone: "",
-      bronze: "public/images/bronze-farm.jpg",
+      bronze: "images/bronze-farm.jpg",
     },
     square: 4,
     quantity: {
@@ -206,9 +206,9 @@ export const elements = [
     ages: ["dawn", "stone", "bronze"],
 
     image: {
-      dawn: "public/images/fruit-tree.jpg",
-      stone: "public/images/fruit-tree.jpg",
-      bronze: "public/images/fruit-tree.jpg",
+      dawn: "images/fruit-tree.jpg",
+      stone: "images/fruit-tree.jpg",
+      bronze: "images/fruit-tree.jpg",
     },
     square: 1,
     quantity: {
@@ -241,9 +241,9 @@ export const elements = [
     ages: ["dawn", "stone", "bronze"],
 
     image: {
-      dawn: "public/images/gold-mine.jpg",
-      stone: "public/images/gold-mine.jpg",
-      bronze: "public/images/gold-mine.jpg",
+      dawn: "images/gold-mine.jpg",
+      stone: "images/gold-mine.jpg",
+      bronze: "images/gold-mine.jpg",
     },
     square: 1,
     quantity: {
@@ -278,7 +278,7 @@ export const elements = [
     image: {
       dawn: "",
       stone: "",
-      bronze: "public/images/bronze-acropolis.jpg",
+      bronze: "images/bronze-acropolis.jpg",
     },
     construction: {
       bronze: {
@@ -314,7 +314,7 @@ export const elements = [
     image: {
       dawn: "",
       stone: "",
-      bronze: "public/images/bronze-hanging-gardens.jpg",
+      bronze: "images/bronze-hanging-gardens.jpg",
     },
     square: 4,
     quantity: {
@@ -342,7 +342,7 @@ export const elements = [
     image: {
       dawn: "",
       stone: "",
-      bronze: "public/images/bronze-pyramids.jpg",
+      bronze: "images/bronze-pyramids.jpg",
     },
     square: 1,
     quantity: {
@@ -370,7 +370,7 @@ export const elements = [
     image: {
       dawn: "",
       stone: "",
-      bronze: "public/images/bronze-stonehenge.jpg",
+      bronze: "images/bronze-stonehenge.jpg",
     },
     square: 4,
     quantity: {
@@ -383,7 +383,7 @@ export const elements = [
     id: 13,
     name: "Bush",
     type: "bush",
-    image: "public/images/bush.jpg",
+    image: "images/bush.jpg",
   },
   {
     id: 14,
@@ -417,9 +417,9 @@ export const elements = [
       },
     },
     image: {
-      dawn: "public/images/dawn-tower.jpeg",
-      stone: "public/images/stone-tower.jpeg",
-      bronze: "public/images/bronze-tower.jpeg",
+      dawn: "images/dawn-tower.jpeg",
+      stone: "images/stone-tower.jpeg",
+      bronze: "images/bronze-tower.jpeg",
     },
     square: 1,
     quantity: {

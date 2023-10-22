@@ -201,24 +201,16 @@ function Game() {
           </div>
           <div className="info-container">
             <div className="info">
-              <img
-                src="public/images/gold-coin.png"
-                alt="gold"
-                className="img-info"
-              />
+              <img src="images/gold-coin.png" alt="gold" className="img-info" />
               <span className="info-details">{resources.gold}</span>
             </div>
             <div className="info">
-              <img
-                src="public/images/food.png"
-                alt="food"
-                className="img-info"
-              />
+              <img src="images/food.png" alt="food" className="img-info" />
               <span className="info-details">{resources.food}</span>
             </div>
             <div className="info">
               <img
-                src="public/images/citizens.png"
+                src="images/citizens.png"
                 alt="citizens"
                 className="img-info"
               />
